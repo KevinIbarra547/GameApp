@@ -32,4 +32,27 @@ main {
     padding: 0.5rem 1rem;
     text-decoration: none;
     border-radius: 5px;
+    margin: 5px;
+}
+.btn.secondary {
+    background: #666;
+}
+.auth-options {
+    margin-top: 20px;
+}
+.auth-form {
+    max-width: 300px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.auth-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
 }

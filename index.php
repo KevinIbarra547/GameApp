@@ -16,9 +16,14 @@
         </ul>
     </nav>
     <main>
-        <h1>Welcome to the PHP Web Game</h1>
-        <p>Prepare for an exciting adventure!</p>
-        <a href="game.php" class="btn">Start Playing</a>
+        <h1>Fortress Fall</h1>
+        <p>Protect your base. Defeat the boss.</p>
+        
+        <div class="auth-options">
+            <a href="account/login.php" class="btn">Login</a>
+            <a href="account/signup.php" class="btn">Sign Up</a>
+            <a href="game.php" class="btn secondary">Continue as Guest</a>
+        </div>
     </main>
 </body>
 </html>
