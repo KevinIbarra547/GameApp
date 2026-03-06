@@ -7,12 +7,6 @@
 </head>
 <body>
     <nav>
-        <ul>
-            <li><a href="../index.php">Home</a></li>
-            <li><a href="../game.php">Play Game</a></li>
-            <li><a href="../leaderboard.php">Leaderboard</a></li>
-            <li><a href="../about.php">About</a></li>
-        </ul>
     </nav>
     <main>
         <h1>Create Account</h1>
@@ -23,6 +17,7 @@
                 <button type="submit" class="btn">Sign Up</button>
             </form>
             <p>Already have an account? <a href="login.php">Login here</a></p>
+            <p><a href="../index.php">Back to Home</a></p>
         </div>
     </main>
 </body>
