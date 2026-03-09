@@ -29,5 +29,27 @@ Function saveGameData($playerName, $score, $highestWaveReached, $potionsCollecte
       // JSON_PRETTY_PRINT makes it format nicely with line breaks so you can read it easily
       file_put_contents($file, json_encode($dataArray, JSON_PRETTY_PRINT));
   }
+function sortLeaderboard($dataArray, $sortBy) {
+
+    // usort takes our array and compares two players at a time (Player A and Player B)
+    usort($dataArray, function($a, $b) use ($sortBy) {
+
+        // If we are sorting by name, we want Alphabetical order (A to Z)
+        if ($sortBy == "playerName") {
+            // The spaceship operator <=> compares the two names.
+            // It returns -1, 0, or 1 to tell usort which name goes first.
+            return $a[$sortBy] <=> $b[$sortBy]; 
+        } 
+        // If we are sorting by score or waves, we want Highest to Lowest
+        else {
+            // Notice we flipped $b and $a here! This makes the biggest numbers go to the top.
+            return $b[$sortBy] <=> $a[$sortBy]; 
+        }
+
+    }); /* *Agent*2* */
+
+    // Return the newly sorted array
+    return $dataArray;
+}
   ?>
-?>
+

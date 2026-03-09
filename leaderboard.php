@@ -2,21 +2,20 @@
 // 1. Bring in our functions file so we have access to saveGameData()
 require_once 'functions.php';
 
-// 2. TEST: Write a new score! 
-// Let's pretend a player named "Kevin" just lost to the boss on Wave 5.
-// Parameters: Name, Score, Highest Wave, Potions Collected, Current Wave
-saveGameData("Kevin", 2500, 5, 3, 5); 
+// 1. Let's add a second test player who got a better score than Kevin
+// saveGameData("Jones", 5000, 10, 8, 10); 
+// (Note: you can comment this out after you run it once so it doesn't keep adding Jones over and over!)
 
-// 3. TEST: Read the data back!
-// Open the JSON file and read all the text inside
+// 2. Read the data back from the file
 $jsonData = file_get_contents('data/gamePlay.json');
+$leaderboardArray = json_decode($jsonData, true);
 
-// Translate that JSON text back into a PHP array
-$leaderboardArray = json_decode($jsonData, true); // |Agent|1|
+// 3. TEST: Sort the array by score!
+$sortedArray = sortLeaderboard($leaderboardArray, "score");
 
-// 4. Print the raw array to the screen so we can verify it worked
-echo "<pre>"; // <pre> makes the array print in a readable, stacked format
-print_r($leaderboardArray);
+// 4. Print the sorted array
+echo "<pre>";
+print_r($sortedArray);
 echo "</pre>";
 ?>
 <!DOCTYPE html>

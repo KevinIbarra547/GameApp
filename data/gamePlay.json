@@ -14,5 +14,13 @@
         "dateTime": 1773078757,
         "potionsCollected": 3,
         "wave": 5
+    },
+    {
+        "playerName": "Jones",
+        "score": 5000,
+        "highestWaveReached": 10,
+        "dateTime": 1773079406,
+        "potionsCollected": 8,
+        "wave": 10
     }
 ]
