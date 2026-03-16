@@ -16,7 +16,7 @@
                 <a href="account/signup.php" class="btn">Sign Up</a> </div>
 
             <div class="guest-option">
-                <a href="game.php" class="btn secondary">Continue as Guest</a>
+                <a href="lobby.php" class="btn secondary">Continue as Guest</a>
             </div>
 
         </div>
