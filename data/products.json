@@ -1,0 +1,19 @@
+[
+    {"id": 1, "name": "Gold Fortress", "desc": "Turns your walls solid gold!", "cost": 5000},
+    {"id": 2, "name": "Neon Slimes", "desc": "Make the slimes glow bright pink.", "cost": 2500},
+    {"id": 3, "name": "Ice Trap", "desc": "Freezes the boss for 5 seconds.", "cost": 1500},
+    {"id": 4, "name": "Shadow Cloak", "desc": "Makes your player character dark grey.", "cost": 3000},
+    {"id": 5, "name": "Spiked Walls", "desc": "Deals damage to the boss when touched.", "cost": 4000},
+    {"id": 6, "name": "Speed Boots", "desc": "Increases player movement speed.", "cost": 2000},
+    {"id": 8, "name": "Fire Potion", "desc": "Leaves a trail of fire.", "cost": 1000},
+    {"id": 9, "name": "Crystal Fortress", "desc": "Beautiful, but fragile walls.", "cost": 6000},
+   
+  
+    {"id": 12, "name": "Double Crossbow", "desc": "Shoot two slimes at once.", "cost": 4500},
+
+    {"id": 14, "name": "Obsidian Walls", "desc": "The strongest blocks in the game.", "cost": 8000},
+    {"id": 15, "name": "Time Warp", "desc": "Slows down the entire game.", "cost": 7000},
+    {"id": 16, "name": "Wizard Hat", "desc": "Increases potion drop rate.", "cost": 3200},
+    {"id": 17, "name": "Electric Trap", "desc": "Stuns the boss.", "cost": 1800},
+    {"id": 18, "name": "Rainbow Slimes", "desc": "Slimes change colors rapidly.", "cost": 5000},
+]

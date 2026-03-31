@@ -1,0 +1,23 @@
+{
+    "nextRefreshTime": 1773945037,
+    "currentItems": [
+        {
+            "id": 1,
+            "name": "Gold Fortress",
+            "desc": "Turns your walls solid gold!",
+            "cost": 5000
+        },
+        {
+            "id": 16,
+            "name": "Wizard Hat",
+            "desc": "Increases potion drop rate.",
+            "cost": 3200
+        },
+        {
+            "id": 15,
+            "name": "Time Warp",
+            "desc": "Slows down the entire game.",
+            "cost": 7000
+        }
+    ]
+}

@@ -17,6 +17,7 @@
 
             <div class="guest-option">
                 <a href="lobby.php" class="btn secondary">Continue as Guest</a>
+                <a href="about.php" class="btn secondary">About the Game</a>
             </div>
 
         </div>

@@ -1,13 +1,22 @@
 <?php
+
 require_once 'functions.php';
+// 1. Read and decode the new users JSON data
+$jsonData = file_get_contents('account/users.json');
+$usersAssoc = json_decode($jsonData, true) ?? [];
 
-// 1. Read and decode the JSON data
-$jsonData = file_get_contents('data/gamePlay.json');
-// If the file is empty, default to an empty array so the page doesn't break
-$leaderboardArray = json_decode($jsonData, true) ?? [];
+$playerList = [];
+// Move the username into the data array so we can display it later
+foreach ($usersAssoc as $username => $data) {
+    $data['playerName'] = $username; 
+    $playerList[] = $data; // |Agent|1|
+}
 
-// 2. Sort the array. Let's sort by highestWaveReached since that's a main goal in Fortress Fall!
-$sortedArray = sortLeaderboard($leaderboardArray, "highestWaveReached");
+// 2. Sort the array by high score! 
+// usort automatically compares two players ($a and $b) to see who has the bigger score
+usort($playerList, function($a, $b) {
+    return $b['highScore'] <=> $a['highScore']; 
+});
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +41,8 @@ $sortedArray = sortLeaderboard($leaderboardArray, "highestWaveReached");
                 <?php
                 // 3. Loop through our sorted array to display each player
                 // We use $index => $player so we can figure out what rank (1st, 2nd, etc.) they are
-                foreach ($sortedArray as $index => $player) {
+                // 3. Loop through our sorted array to display each player
+                foreach ($playerList as $index => $player) {
 
                     // Rank is the index + 1 (because PHP arrays start counting at 0!)
                     $rank = $index + 1;
@@ -41,15 +51,16 @@ $sortedArray = sortLeaderboard($leaderboardArray, "highestWaveReached");
                     echo "<tr>";
                     echo "<td>{$rank}</td>";
                     echo "<td>{$player['playerName']}</td>";
-                    echo "<td>{$player['highestWaveReached']}</td>";
-                    echo "<td>{$player['score']}</td>";
-                    echo "</tr>"; /* *Agent*2* */
+                    // Using the exact keys we saved in save_score.php!
+                    echo "<td>{$player['maxWave']}</td>";
+                    echo "<td>{$player['highScore']}</td>"; // |Agent|1|
+                    echo "</tr>"; 
                 }
                 ?>
             </tbody>
         </table>
 
-        <a href="index.php" class="btn">Back to Main Menu</a>
+        <a href="lobby.php" class="btn">Back to camp</a>
     </div>
 </body>
 </html>

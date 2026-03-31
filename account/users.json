@@ -1,0 +1,54 @@
+{
+    "395207": {
+        "password": "$2y$10$V.GOTtkEleA3Qk5qX\/\/cPuM.yJqhwv3OtiyU6v85915UcMNbDImk.",
+        "highScore": 9999969600,
+        "maxWave": 2,
+        "wavesCompleted": 1,
+        "inventory": [
+            "Shadow Cloak",
+            "Ice Trap",
+            "Fire Potion",
+            "Ice Trap",
+            "Ice Trap",
+            "Ice Trap",
+            "Ice Trap",
+            "Ice Trap",
+            "Ice Trap",
+            "Ice Trap",
+            "Shadow Cloak",
+            "Shadow Cloak",
+            "Ice Trap",
+            "Fire Potion",
+            "Ice Trap",
+            "Gold Fortress",
+            "Gold Fortress",
+            "Wizard Hat",
+            "Time Warp",
+            "Gold Fortress",
+            "Wizard Hat",
+            "Time Warp",
+            "Rainbow Slimes",
+            "Neon Slimes",
+            "Crystal Fortress"
+        ],
+        "equipped": []
+    },
+    "391281": {
+        "password": "$2y$10$rPpIMwDM6lz5snHmW0Iqie9prGtIaf5HcY0w4jkTh1dBMYegghMrG",
+        "highScore": 0,
+        "maxWave": 1
+    },
+    "012345": {
+        "password": "$2y$10$lKe9ypInvjqDNj0Elnfr.OnCWarXs4a6CboaCLh0Z79\/La17FmmBe",
+        "highScore": 1800,
+        "maxWave": 1,
+        "inventory": [
+            "Gold Fortress",
+            "Wizard Hat"
+        ],
+        "equipped": [
+            "Gold Fortress",
+            "Wizard Hat"
+        ]
+    }
+}
