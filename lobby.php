@@ -17,7 +17,7 @@
         </div>
 
         <a href="game.php" class="btn-large play-btn">PLAY GAME</a>
-
+        <a href="index.php" class="btn secondary">Return to Main Menu</a>
     </div>
 </body>
 </html>
