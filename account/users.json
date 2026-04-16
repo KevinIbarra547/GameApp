@@ -1,7 +1,7 @@
 {
     "395207": {
         "password": "$2y$10$V.GOTtkEleA3Qk5qX\/\/cPuM.yJqhwv3OtiyU6v85915UcMNbDImk.",
-        "highScore": 9999969600,
+        "highScore": 2400,
         "maxWave": 2,
         "wavesCompleted": 1,
         "inventory": [
@@ -29,14 +29,44 @@
             "Time Warp",
             "Rainbow Slimes",
             "Neon Slimes",
-            "Crystal Fortress"
+            "Crystal Fortress",
+            "Gold Fortress",
+            "Wizard Hat",
+            "Time Warp",
+            "Time Warp",
+            "Time Warp",
+            "Time Warp",
+            "Gold Fortress",
+            "Gold Fortress",
+            "Gold Fortress",
+            "Wizard Hat",
+            "Time Warp",
+            "Wizard Hat",
+            "Time Warp",
+            "Time Warp",
+            "Time Warp",
+            "Time Warp",
+            "Gold Fortress",
+            "Wizard Hat",
+            "Wizard Hat",
+            "Gold Fortress",
+            "Gold Fortress",
+            "Gold Fortress",
+            "Gold Fortress",
+            "Time Warp",
+            "Wizard Hat",
+            "Gold Fortress"
         ],
-        "equipped": []
+        "equipped": [
+            "Gold Fortress",
+            "Fire Potion"
+        ]
     },
     "391281": {
         "password": "$2y$10$rPpIMwDM6lz5snHmW0Iqie9prGtIaf5HcY0w4jkTh1dBMYegghMrG",
         "highScore": 0,
-        "maxWave": 1
+        "maxWave": 1,
+        "wavesCompleted": 0
     },
     "012345": {
         "password": "$2y$10$lKe9ypInvjqDNj0Elnfr.OnCWarXs4a6CboaCLh0Z79\/La17FmmBe",
@@ -50,5 +80,22 @@
             "Gold Fortress",
             "Wizard Hat"
         ]
+    },
+    "3952078": {
+        "password": "$2y$10$gXAhR0JDrXYmsDp.hdchuOJJocIxUQyI7yTNpnFJJXuf\/rwL1KT3e",
+        "highScore": 1300,
+        "maxWave": 2,
+        "wavesCompleted": 1
+    },
+    "39520709": {
+        "password": "$2y$10$VldQ\/ZOZl\/BTQ79SFgxtdeZTtn\/vQQWf21GHAvN\/B67gNeUOMwysW",
+        "highScore": 0,
+        "maxWave": 1
+    },
+    "39520234": {
+        "password": "$2y$10$dyUBfI.4cMLyeXbdhFMY3OFIDhBxay\/AgNCYXMMdT77novYSY6\/qC",
+        "highScore": 1200,
+        "maxWave": 1,
+        "wavesCompleted": 0
     }
 }

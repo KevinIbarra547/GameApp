@@ -5,33 +5,34 @@ $usersFile = 'account/users.json';
 $productsFile = 'data/products.json';
 $shopStateFile = 'data/shop_state.json';
 
-// Load Products
-$allProducts = file_exists($productsFile) ? json_decode(file_get_contents($productsFile), true) : [];
-
 // Load User Data & Points
 $userPoints = 0;
 $username = $_SESSION['username'] ?? null;
 if ($username && file_exists($usersFile)) {
     $usersData = json_decode(file_get_contents($usersFile), true);
-    // Assuming 'highScore' is your currency based on your users.json file
     $userPoints = $usersData[$username]['highScore'] ?? 0; 
 }
+
+// NEW: Load the Shop State FIRST, so we know what is on sale and how much it costs
+// *Agent*2*
+$shopState = file_exists($shopStateFile) ? json_decode(file_get_contents($shopStateFile), true) : ['nextRefreshTime' => 0, 'currentItems' => []];
+$itemsOnSale = $shopState['currentItems'];
 
 // Process "Buy" Button Click
 if (isset($_POST['buy_item']) && $username) {
     $itemName = $_POST['buy_item'];
 
-    // Find how much the item costs
+    // Find how much the item costs by looking at the items currently on sale!
     $itemCost = 0;
-    foreach ($allProducts as $p) {
+    foreach ($itemsOnSale as $p) {
         if ($p['name'] === $itemName) {
             $itemCost = $p['cost'];
-            break;
+            break; // Stop looking once we find it
         }
     }
 
-    // Check if they have enough points
-    if ($userPoints >= $itemCost) {
+    // Check if they have enough points AND that the item actually costs something (> 0)
+    if ($userPoints >= $itemCost && $itemCost > 0) {
         // Deduct points
         $usersData[$username]['highScore'] -= $itemCost;
         $userPoints = $usersData[$username]['highScore']; // Update for the display
@@ -48,15 +49,10 @@ if (isset($_POST['buy_item']) && $username) {
         $modalTitle = "Purchase Successful!";
         $modalMessage = "You successfully bought the $itemName.";
     } else {
-        $modalTitle = "Insufficient Funds";
-        $modalMessage = "You don't have enough points to buy the $itemName.";
+        $modalTitle = "Purchase Failed";
+        $modalMessage = "You don't have enough points or the item is invalid.";
     }
 }
-
-// Load Shop State
-$shopState = file_exists($shopStateFile) ? json_decode(file_get_contents($shopStateFile), true) : ['nextRefreshTime' => 0, 'currentItems' => []];
-
-$itemsOnSale = $shopState['currentItems'];
 ?>
 <!DOCTYPE html>
 <html lang="en">

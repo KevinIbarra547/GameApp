@@ -8,13 +8,13 @@
             "cost": 5000
         },
         {
-            "id": 16,
+            "id": 12,
             "name": "Wizard Hat",
             "desc": "Increases potion drop rate.",
             "cost": 3200
         },
         {
-            "id": 15,
+            "id": 11,
             "name": "Time Warp",
             "desc": "Slows down the entire game.",
             "cost": 7000

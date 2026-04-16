@@ -31,10 +31,11 @@ if (isset($_SESSION['username'])) {
     <div id="welcome-screen">
         <h1>Fortress Fall</h1>
 
-        <canvas id="gameCanvas" width="800" height="600" style="background-color: #4CAF50; border: 4px solid #2c3e50; border-radius: 8px;"></canvas>
+        <canvas id="gameCanvas" width="800" height="600" style="border: 4px solid #2c3e50; border-radius: 8px;"></canvas>
 
         <br>
-        <a href="lobby.php" class="btn secondary">Quit Game</a>
+        <!-- REPLACE WITH THIS -->
+        <button class="btn secondary" onclick="quitGame()">Quit Game</button>
     </div>
 
     <script>
@@ -83,6 +84,18 @@ if (isset($_SESSION['username'])) {
         let currentWave = 1; 
         let doubleDamageTime = 0; 
         let customWallColor = "#7f8c8d"; // Default wall color
+        // --- GRASS FIELD SETUP ---
+        // We generate 500 little grass blades once to save performance
+        let grassBlades = [];
+        for (let i = 0; i < 500; i++) {
+            grassBlades.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                width: 2,
+                height: Math.random() * 8 + 4, // Random height between 4 and 12
+                color: Math.random() > 0.5 ? "#388E3C" : "#2E7D32" // Two shades of dark green
+            });
+        }
 
         // --- CHECK EQUIPPED ITEMS ---
         if (myEquippedItems.includes("Shadow Cloak")) {
@@ -241,7 +254,28 @@ if (isset($_SESSION['username'])) {
                 }
 
             } 
+            else if (activeTool === "TRAP") {
+                // 1. Check if the player actually has traps to place
+                if (trapInventory > 0) {
+                    // 2. Decide the color based on equipped items
+                    let trapColor = "#e67e22"; // Default orange
+                    if (myEquippedItems.includes("Ice Trap")) { trapColor = "#3498db"; }
+                    if (myEquippedItems.includes("Electric Trap")) { trapColor = "#f1c40f"; }
+
+                    // 3. Add the trap to our 'traps' array
+                    traps.push({
+                        x: clickX - 10,
+                        y: clickY - 10,
+                        size: 20,
+                        color: trapColor
+                    });
+
+                    // 4. Use up one trap from the inventory
+                    trapInventory--; 
+                }
+            }
         }); 
+     
         
         window.addEventListener("keydown", function(event) {
             if (keys.hasOwnProperty(event.key)) { keys[event.key] = true; }
@@ -252,7 +286,10 @@ if (isset($_SESSION['username'])) {
             if (event.key === "4") { activeTool = "TRAP"; } 
             
             if (event.key === "r" || event.key === "R") {
-                if (gamePhase === "GAMEOVER" || gamePhase === "VICTORY") { location.reload(); }
+                if (gamePhase === "GAMEOVER" || gamePhase === "VICTORY") {
+                    saveGameStats(score, currentWave, currentWave - 1);
+                    setTimeout(function() { location.reload(); }, 500);
+                }
             }
             if (event.key === "n" || event.key === "N") {
                 if (gamePhase === "VICTORY") {
@@ -287,6 +324,12 @@ if (isset($_SESSION['username'])) {
             .then(data => { console.log("Server response:", data.message); })
             .catch(error => { console.error("Error saving stats:", error); });
         }
+        function quitGame() {
+            saveGameStats(score, currentWave, currentWave - 1);
+            setTimeout(function() {
+                window.location.href = 'lobby.php';
+            }, 500);
+        }
 
         // --- MAIN GAME LOOP ---
         function gameLoop() {
@@ -296,20 +339,70 @@ if (isset($_SESSION['username'])) {
             if (keys.ArrowLeft && player.x > 0) { player.x -= player.speed; }  
             if (keys.ArrowRight && player.x < canvas.width - player.size) { player.x += player.speed; }
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // --- DRAW BACKGROUND (THE GRASS FIELD) ---
+            // 1. Draw the base green field (replaces clearRect)
+            ctx.fillStyle = "#4CAF50"; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 2. Loop through our grass array and draw each patch
+            for (let i = 0; i < grassBlades.length; i++) {
+                let g = grassBlades[i];
+                ctx.fillStyle = g.color;
+                // Draw main blade
+                ctx.fillRect(g.x, g.y, g.width, g.height);
+                // Draw a smaller side blade next to it to make it look like a clump of grass
+                ctx.fillRect(g.x + 2, g.y + (g.height / 2), g.width, g.height / 2);
+            }
 
             
+        
             // Draw walls
             for (let i = 0; i < walls.length; i++) {
                 let currentWall = walls[i];
 
+                // --- DRAW WALL (BRICK BLOCK) ---
                 ctx.fillStyle = currentWall.color; 
                 ctx.fillRect(currentWall.x, currentWall.y, currentWall.size, currentWall.size);
+
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "rgba(0, 0, 0, 0.5)"; 
+                ctx.strokeRect(currentWall.x, currentWall.y, currentWall.size, currentWall.size);
+
+                let third = currentWall.size / 3;
+                ctx.beginPath();
+                ctx.moveTo(currentWall.x, currentWall.y + third);
+                ctx.lineTo(currentWall.x + currentWall.size, currentWall.y + third);
+                ctx.moveTo(currentWall.x, currentWall.y + third * 2);
+                ctx.lineTo(currentWall.x + currentWall.size, currentWall.y + third * 2);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(currentWall.x + currentWall.size / 2, currentWall.y);
+                ctx.lineTo(currentWall.x + currentWall.size / 2, currentWall.y + third);
+                ctx.moveTo(currentWall.x + currentWall.size / 4, currentWall.y + third);
+                ctx.lineTo(currentWall.x + currentWall.size / 4, currentWall.y + third * 2);
+                ctx.moveTo(currentWall.x + (currentWall.size / 4) * 3, currentWall.y + third);
+                ctx.lineTo(currentWall.x + (currentWall.size / 4) * 3, currentWall.y + third * 2);
+                ctx.moveTo(currentWall.x + currentWall.size / 2, currentWall.y + third * 2);
+                ctx.lineTo(currentWall.x + currentWall.size / 2, currentWall.y + currentWall.size);
+                ctx.stroke();
+                // --- END WALL DRAWING ---
             }
 
-            // Draw player
-            ctx.fillStyle = player.color;
-            ctx.fillRect(player.x, player.y, player.size, player.size); 
+            // --- DRAW PLAYER (KNIGHT) ---
+            // 1. Draw the Body (Darker silver rectangle)
+            ctx.fillStyle = "#bdc3c7"; 
+            ctx.fillRect(player.x + 5, player.y + 15, player.size - 10, player.size - 15);
+
+            // 2. Draw the Head (Lighter silver circle)
+            ctx.beginPath();
+            ctx.arc(player.x + (player.size / 2), player.y + 12, 12, 0, Math.PI * 2);
+            ctx.fillStyle = "#ecf0f1";
+            ctx.fill();
+
+            // 3. Draw the Visor (Dark blue eye slit)
+            ctx.fillStyle = "#2c3e50";
+            ctx.fillRect(player.x + 10, player.y + 8, 15, 5);
 
             // Fire Potion Logic
             if (myEquippedItems.includes("Fire Potion")) {
@@ -336,12 +429,26 @@ if (isset($_SESSION['username'])) {
             // Handle Traps
             for (let t = traps.length - 1; t >= 0; t--) {
                 let currentTrap = traps[t];
+
+                // --- DRAW SPIKE TRAP ---
+                ctx.fillStyle = "#34495e"; 
+                ctx.fillRect(currentTrap.x, currentTrap.y + 10, currentTrap.size, currentTrap.size - 10);
+
                 ctx.fillStyle = currentTrap.color;
-                ctx.fillRect(currentTrap.x, currentTrap.y, currentTrap.size, currentTrap.size);
+                ctx.beginPath();
+                ctx.moveTo(currentTrap.x + 2, currentTrap.y + 10); 
+                ctx.lineTo(currentTrap.x + 8, currentTrap.y);      
+                ctx.lineTo(currentTrap.x + 10, currentTrap.y + 10); 
+
+                ctx.moveTo(currentTrap.x + 10, currentTrap.y + 10); 
+                ctx.lineTo(currentTrap.x + 16, currentTrap.y);      
+                ctx.lineTo(currentTrap.x + 18, currentTrap.y + 10); 
+                ctx.fill();
+                // --- END SPIKE TRAP DRAWING ---
 
                 if (boss.x < currentTrap.x + currentTrap.size && boss.x + boss.size > currentTrap.x &&
                     boss.y < currentTrap.y + currentTrap.size && boss.y + boss.size > currentTrap.y) {
-                    
+
                     if (myEquippedItems.includes("Ice Trap")) {
                         boss.speed = 0; // Completely frozen
                         setTimeout(function() { boss.speed = 1; }, 5000); // For 5 seconds
@@ -354,7 +461,7 @@ if (isset($_SESSION['username'])) {
                         boss.speed = 0.2; // Normal trap slow
                         setTimeout(function() { boss.speed = 1; }, 3000); // Normal 3 seconds
                     }
-                    
+
                     traps.splice(t, 1); 
                 }
             }
@@ -394,8 +501,31 @@ if (isset($_SESSION['username'])) {
                     saveGameStats(score, currentWave, currentWave - 1); 
                 }
 
+                // --- DRAW BOSS (CRIMSON DEMON) ---
+                // 1. Draw the Body (Crimson square)
                 ctx.fillStyle = boss.color;
-                ctx.fillRect(boss.x, boss.y, boss.size, boss.size);
+                ctx.fillRect(boss.x, boss.y + 10, boss.size, boss.size - 10);
+
+                // 2. Draw Glowing Yellow Eyes
+                ctx.fillStyle = "#f1c40f"; // Gold/Yellow
+                ctx.fillRect(boss.x + 10, boss.y + 20, 10, 5); // Left eye
+                ctx.fillRect(boss.x + 30, boss.y + 20, 10, 5); // Right eye
+
+                // 3. Draw Horns using Paths!
+                ctx.fillStyle = "#2c3e50"; // Dark stone horns
+                ctx.beginPath();
+                // Left Horn
+                ctx.moveTo(boss.x + 5, boss.y + 10);  // Bottom left of horn
+                ctx.lineTo(boss.x + 15, boss.y + 10); // Bottom right of horn
+                ctx.lineTo(boss.x + 5, boss.y - 10);  // Tip of the horn (points up and left)
+                ctx.fill();
+
+                ctx.beginPath();
+                // Right Horn
+                ctx.moveTo(boss.x + boss.size - 5, boss.y + 10); 
+                ctx.lineTo(boss.x + boss.size - 15, boss.y + 10);
+                ctx.lineTo(boss.x + boss.size - 5, boss.y - 10);
+                ctx.fill();
 
                 for (let j = slimes.length - 1; j >= 0; j--) {
                     let s = slimes[j];
@@ -431,11 +561,26 @@ if (isset($_SESSION['username'])) {
             }
         
             // Handle Potions
+            // Handle Potions
             for (let k = potions.length - 1; k >= 0; k--) {
                 let p = potions[k];
-                ctx.fillStyle = p.color;
-                ctx.fillRect(p.x, p.y, p.size, p.size);
 
+                // --- NEW FLASK DRAWING CODE ---
+                // 1. Draw the round bottom of the flask
+                ctx.beginPath();
+                ctx.arc(p.x + p.size/2, p.y + p.size - 5, p.size/2, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+
+                // 2. Draw the neck of the flask
+                ctx.fillRect(p.x + p.size/2 - 3, p.y, 6, p.size - 5);
+
+                // 3. Add a little white highlight to make it look like glass
+                ctx.fillStyle = "white";
+                ctx.fillRect(p.x + p.size/2 + 2, p.y + 2, 2, 8);
+                // --- END DRAWING CODE ---
+
+                // Keep the collision detection so you can still pick them up!
                 if (player.x < p.x + p.size && player.x + player.size > p.x &&
                     player.y < p.y + p.size && player.y + player.size > p.y) {
 
@@ -446,11 +591,26 @@ if (isset($_SESSION['username'])) {
                 }
             }
 
+          
             // Handle Dropped Traps
             for (let dt = droppedTraps.length - 1; dt >= 0; dt--) {
                 let d = droppedTraps[dt];
-                ctx.fillStyle = d.color;
+
+                // --- DRAW SUPPLY CRATE ---
+                ctx.fillStyle = d.color; 
                 ctx.fillRect(d.x, d.y, d.size, d.size);
+
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "#2c3e50"; 
+                ctx.strokeRect(d.x, d.y, d.size, d.size); 
+
+                ctx.beginPath();
+                ctx.moveTo(d.x, d.y); 
+                ctx.lineTo(d.x + d.size, d.y + d.size);
+                ctx.moveTo(d.x + d.size, d.y); 
+                ctx.lineTo(d.x, d.y + d.size);
+                ctx.stroke();
+                // --- END CRATE DRAWING ---
 
                 if (player.x < d.x + d.size && player.x + player.size > d.x &&
                     player.y < d.y + d.size && player.y + player.size > d.y) {

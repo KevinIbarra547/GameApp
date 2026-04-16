@@ -72,7 +72,7 @@
         </ul>
 
         <h2>Credits</h2>
-        <p>Developed by: Your Name</p>
+        <p>Developed by: Kevin Ibarra</p>
 
         <h2>AI Documentation</h2>
         <p>
@@ -82,6 +82,12 @@
                 <li>Writing the logic for my custom power-ups.</li>
                 <li>Understanding how HTML canvas drawing works.</li>
             </ul>
-    <a href="index.php" class="back-btn">Return to Main Menu</a>
-        </p>
-    </main>
+    <p>
+    <h1>Game Walkthrough</h1>
+    <p style="text-align: center;">
+            <iframe src="https://drive.google.com/file/d/1Oaj4lREPEYShY2Tria7t0VejiahaDJfW/preview" width="640" height="480"></iframe>
+    </p>
+     <a href="index.php" class="back-btn">Return to Main Menu</a>
+        
+  
+            </main>
